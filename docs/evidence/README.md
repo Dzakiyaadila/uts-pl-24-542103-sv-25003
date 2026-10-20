@@ -14,6 +14,8 @@ Status di tabel menunjukkan ketersediaannya di repository.
 | 02-project-plan-pr.png | Soal 3b | PR dokumentasi dengan base dev dan branch sumber | Belum ditambahkan |
 | 03-project-plan-merged.png | Soal 3b | PR #2 berstatus Merged ke dev | Belum ditambahkan |
 | 04-backend-skeleton.png | Fondasi backend, pendukung soal 1 | Versi Laravel dan hasil tes bawaan; belum membuktikan API atau koneksi database | Belum ditambahkan |
+| 06-frontend-skeleton.png | Fondasi frontend, pendukung soal 2 | Halaman awal Vue di browser | Belum ditambahkan |
+| 07-frontend-build.png | Persiapan soal 3c | Hasil lint dan build frontend | Belum ditambahkan |
 
 Daftar lengkap kebutuhan bukti mengikuti checklist rubrik di Notion.
 Tambahkan baris untuk Actions, branch protection, API/Postman,
