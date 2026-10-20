@@ -6,9 +6,14 @@ Konstruksi dan Evolusi Perangkat Lunak sekaligus portofolio.
 
 ## Status proyek
 
-Tahap saat ini: perencanaan dan fondasi repository.
+Tahap saat ini: fondasi repository dan skeleton backend.
 
-Backend, frontend, database, CI, dan Docker belum diimplementasikan.
+Skeleton Laravel tersedia di backend/. Frontend, layanan PostgreSQL,
+CI, dan Docker belum diimplementasikan.
+
+Konfigurasi PostgreSQL development dan testing sudah disiapkan.
+Koneksi database akan diverifikasi setelah layanan PostgreSQL tersedia.
+
 Fitur di bawah merupakan scope yang akan dikerjakan.
 
 ## Fitur yang direncanakan
@@ -39,6 +44,7 @@ Versi image dasar ditetapkan saat implementasi Docker.
 - [Rencana proyek](docs/project-plan.md)
 - [Indeks bukti](docs/evidence/README.md)
 - [Catatan pendampingan di Notion](https://app.notion.com/p/3ffcadac5c7f81a6b950c7a3067e1ade)
+- [Panduan backend](backend/README.md)
 
 Petunjuk instalasi dan menjalankan aplikasi ditambahkan setelah
 skeleton dan konfigurasi terkait benar-benar tersedia serta diuji.
