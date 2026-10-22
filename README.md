@@ -6,14 +6,11 @@ Konstruksi dan Evolusi Perangkat Lunak sekaligus portofolio.
 
 ## Status proyek
 
-Tahap saat ini: fondasi repository dan skeleton backend/frontend.
+Skeleton Laravel dan Vue tersedia.
+PostgreSQL khusus testing serta workflow CI backend/frontend disiapkan.
 
-Skeleton Laravel tersedia di backend/ dan Vue di frontend/.
-Konfigurasi PostgreSQL development/testing dan instance Axios
-berbasis environment sudah disiapkan.
-
-Integrasi API, layanan PostgreSQL, CI, dan Docker belum diverifikasi.
-Fitur di bawah merupakan scope yang akan dikerjakan.
+Database development, integrasi API, Docker Compose, dan publikasi
+image belum diimplementasikan. Hasil run CI dicatat pada tab Actions.
 
 ## Fitur yang direncanakan
 
@@ -45,6 +42,7 @@ Versi image dasar ditetapkan saat implementasi Docker.
 - [Catatan pendampingan di Notion](https://app.notion.com/p/3ffcadac5c7f81a6b950c7a3067e1ade)
 - [Panduan backend](backend/README.md)
 - [Panduan frontend](frontend/README.md)
+- [Pengujian lokal dan CI](docs/testing.md)
 
 Petunjuk instalasi dan menjalankan aplikasi ditambahkan setelah
 skeleton dan konfigurasi terkait benar-benar tersedia serta diuji.

@@ -16,6 +16,10 @@ Status di tabel menunjukkan ketersediaannya di repository.
 | 04-backend-skeleton.png | Fondasi backend, pendukung soal 1 | Versi Laravel dan hasil tes bawaan; belum membuktikan API atau koneksi database | Belum ditambahkan |
 | 06-frontend-skeleton.png | Fondasi frontend, pendukung soal 2 | Halaman awal Vue di browser | Belum ditambahkan |
 | 07-frontend-build.png | Persiapan soal 3c | Hasil lint dan build frontend | Belum ditambahkan |
+| 08-postgresql-testing.png | Persiapan soal 3c | Migrasi dan tes dengan PostgreSQL lokal | Belum ditambahkan |
+| 09-ci-green.png | Soal 3c | Backend tests dan Frontend build hijau | Belum ditambahkan |
+| 10-main-protection.png | Soal 3b | Aturan PR dan required checks main | Belum ditambahkan |
+| 11-dev-protection.png | Soal 3b | Aturan PR dan required checks dev | Belum ditambahkan |
 
 Daftar lengkap kebutuhan bukti mengikuti checklist rubrik di Notion.
 Tambahkan baris untuk Actions, branch protection, API/Postman,
