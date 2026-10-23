@@ -4,42 +4,73 @@
 
 | Lingkungan | Database | Koneksi |
 | --- | --- | --- |
-| Development lokal | orderly_dev | Belum disiapkan |
-| Testing lokal | orderly_test | PostgreSQL container, 127.0.0.1:55433 |
+| Development lokal | orderly_dev | Container orderly-dev-db, 127.0.0.1:55432, volume orderly-dev-data |
+| Testing lokal | orderly_test | Container orderly-test-db, 127.0.0.1:55433 |
 | CI | orderly_ci_test | Service sementara, 127.0.0.1:5432 |
 | Deployment | orderly_prod | Belum disiapkan |
 
-Semua lingkungan menggunakan PostgreSQL.
-Container testing lokal terpisah dari database development.
+Semua lingkungan menggunakan PostgreSQL. Container testing terpisah
+dari database development, dan hanya development memakai volume data
+persisten pada tahap ini.
 
-## Persiapan testing lokal
+## Persiapan database lokal
 
-Konfigurasi PostgreSQL container berada di
+Konfigurasi PostgreSQL container testing ada di
 backend/.env.postgres-testing, berdasarkan file .example.
+Konfigurasi Laravel testing ada di backend/.env.testing.
+Gunakan POSTGRES_DB dan POSTGRES_USER bernilai orderly_test serta
+DB_DATABASE dan DB_USERNAME yang sama; port host 55433.
+Password pada kedua file aktual harus cocok.
 
-Konfigurasi Laravel testing berada di backend/.env.testing.
-Password pada kedua file aktual harus cocok dan tidak di-commit.
+Untuk development, gunakan backend/.env.postgres-development yang
+berisi POSTGRES_DB=orderly_dev, POSTGRES_USER=orderly_app, dan
+POSTGRES_PASSWORD tidak kosong. File backend/.env memakai
+DB_CONNECTION=pgsql, DB_HOST=127.0.0.1, DB_PORT=55432,
+DB_DATABASE=orderly_dev, DB_USERNAME=orderly_app, dan password yang sama.
+Pilih password development berbeda dari password testing.
 
-Container testing bernama orderly-test-db.
-Setelah container pernah dibuat, gunakan docker start orderly-test-db
-untuk menyalakannya kembali.
+Kedua pasangan file aktual diabaikan Git. Nilai POSTGRES_* hanya
+dipakai saat inisialisasi volume baru; mengedit env-file setelah
+database terbentuk tidak mengubah role atau password di database.
+Jangan menghapus volume orderly-dev-data jika sudah berisi data
+development yang perlu disimpan.
+
+Untuk menyalakan kembali container yang pernah dibuat:
+
+```bash
+docker start orderly-dev-db orderly-test-db
+docker ps --filter name=orderly
+```
 
 ## Menjalankan tes
 
-Dari backend:
+Dari backend, setelah orderly-test-db siap:
 
 ```bash
 php artisan config:clear
 php artisan migrate --env=testing
 php artisan test
-vendor/bin/pint --test
+./vendor/bin/pint --test
 ```
 
 PostgreSqlConnectionTest memeriksa environment testing, driver PostgreSQL,
 identitas database/user aktual, dan tabel users hasil migrasi.
+AuthApiTest menggunakan RefreshDatabase pada orderly_test dan menguji
+login berhasil/gagal, validasi, akses terlindungi, serta logout yang
+mencabut token. Tes ini tidak memakai database development.
 
-Tes infrastruktur dan tes bawaan belum memenuhi persyaratan
-minimal dua feature test endpoint API UTS.
+## Verifikasi API manual
+
+Setelah orderly-dev-db siap, dari backend jalankan php artisan migrate
+dan php artisan orderly:create-dev-user, lalu php artisan serve.
+[Postman Collection](postman/orderly-api.postman_collection.json) berisi
+request dengan variabel lokal, tanpa password atau token sebenarnya.
+
+Hasil yang diperiksa: POST /api/login mengembalikan 200 dan token;
+GET /api/user dengan Bearer token mengembalikan 200; POST /api/logout
+mengembalikan 200; GET /api/user dengan token yang telah dicabut
+mengembalikan 401. Feature test juga memeriksa kredensial salah 401
+dan input login tidak lengkap 422.
 
 ## Frontend
 
@@ -70,4 +101,6 @@ event push dan pembaruan pull_request.
 ## Bukti
 
 Catat tautan run, branch, commit, hasil job, serta screenshot.
-Nilai secret tidak boleh muncul dalam bukti atau log tambahan.
+PR autentikasi: https://github.com/Dzakiyaadila/uts-pl-24-542103-sv-25003/pull/13.
+Nilai secret, password, dan token tidak boleh muncul dalam bukti
+atau log tambahan.
