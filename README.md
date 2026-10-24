@@ -1,68 +1,59 @@
 # Orderly API
 
-Aplikasi pengelolaan pesanan souvenir dengan Laravel REST API,
-Vue, dan PostgreSQL. Dikembangkan untuk tugas UTS
-Konstruksi dan Evolusi Perangkat Lunak sekaligus portofolio.
+Aplikasi pengelolaan pesanan souvenir untuk tugas UTS Konstruksi dan
+Evolusi Perangkat Lunak. Laravel 12 menyediakan API, Vue 3 menampilkan
+login dan CRUD, dan PostgreSQL menyimpan pesanan.
 
-## Status proyek
+## Fitur
 
-Skeleton Laravel dan Vue tersedia.
-PostgreSQL khusus testing serta workflow CI backend/frontend disiapkan.
+- Login dan logout dengan token Laravel Sanctum.
+- Daftar, detail, tambah, ubah, dan hapus pesanan milik pengguna login.
+- Validasi JSON dan perhitungan total harga di backend.
+- Feature test PostgreSQL, pemeriksaan CI, dan build container.
+- Docker Compose menjalankan PostgreSQL, backend Apache, dan frontend Nginx
+  pada satu alamat browser. Data PostgreSQL disimpan pada volume.
 
-Database development, integrasi API, Docker Compose, dan publikasi
-image belum diimplementasikan. Hasil run CI dicatat pada tab Actions.
+## Menjalankan lewat Docker Compose
 
-## Fitur yang direncanakan
+Dari root repository, salin `.env.example` ke `.env` jika belum ada.
+Isi `DB_PASSWORD` dengan nilai nonkosong dan `APP_KEY` dengan key Laravel
+yang valid, misalnya nilai dari `backend/.env` lokal. Jangan commit
+`.env` atau membagikan kedua rahasia tersebut.
 
-- Login dan logout menggunakan token Laravel Sanctum.
-- CRUD pesanan milik pengguna terautentikasi.
-- Perhitungan total harga oleh backend.
-- Validasi dan respons JSON.
-- Frontend Vue menggunakan Axios.
-- Pengujian API, CI, Docker Compose, dan publikasi image ke GHCR.
+```bash
+docker compose config --quiet
+docker compose up --build -d
+docker compose ps
+docker compose exec backend php artisan orderly:create-dev-user
+```
 
-## Teknologi yang ditetapkan
+Buka http://localhost:8080, lalu login dengan akun yang dibuat melalui
+prompt. Backend menjalankan migrasi ketika service mulai.
+Untuk menguji persistensi, buat satu pesanan, jalankan `docker compose down`
+lalu `docker compose up -d`, dan periksa pesanan yang sama di browser.
+Perintah `down -v` menghapus volume database.
 
-| Komponen | Pilihan |
-| --- | --- |
-| Backend | Laravel 12 dan PHP 8.2 |
-| Frontend | Vue 3, JavaScript, Vite, Vue Router, Axios |
-| Tooling frontend | Node.js 24 dan npm |
-| Database | PostgreSQL 16 |
-| Container | Docker dan Docker Compose |
-| CI / registry | GitHub Actions dan GHCR |
+Untuk pengembangan tanpa Compose, ikuti panduan backend dan frontend di bawah.
 
-Versi dependency persis dicatat melalui lockfile setelah instalasi.
-Versi image dasar ditetapkan saat implementasi Docker.
+## CI dan image
+
+Pull Request ke `dev` menjalankan tes backend, build frontend, serta build
+image backend dan frontend tanpa publikasi. Setelah perubahan masuk `main`,
+workflow membangun image multiarsitektur dan memublikasikannya ke GHCR
+sebagai `ghcr.io/dzakiyaadila/orderly-backend` dan
+`ghcr.io/dzakiyaadila/orderly-frontend` dengan tag `main` dan SHA commit.
+Publikasi image bukan hosting aplikasi/database.
 
 ## Dokumentasi
 
-- [Rencana proyek](docs/project-plan.md)
-- [Indeks bukti](docs/evidence/README.md)
-- [Catatan pendampingan di Notion](https://app.notion.com/p/3ffcadac5c7f81a6b950c7a3067e1ade)
+- [Kontrak API pesanan](docs/order-api.md)
+- [Postman Collection](docs/postman/orderly-api.postman_collection.json)
 - [Panduan backend](backend/README.md)
 - [Panduan frontend](frontend/README.md)
 - [Pengujian lokal dan CI](docs/testing.md)
+- [Rencana proyek](docs/project-plan.md)
+- [Indeks bukti](docs/evidence/README.md)
+- [Catatan dan checklist di Notion](https://app.notion.com/p/3ffcadac5c7f81a6b950c7a3067e1ade)
 
-Petunjuk instalasi dan menjalankan aplikasi ditambahkan setelah
-skeleton dan konfigurasi terkait benar-benar tersedia serta diuji.
-
-## Alur pengembangan
-
-Branch pekerjaan dibuat dari dev dan digabungkan kembali melalui PR.
-Versi yang siap dirilis masuk dari dev ke main melalui PR.
-
-Gunakan Conventional Commits dan lakukan pemeriksaan yang relevan
-sebelum commit. Required CI checks dipasang setelah workflow tersedia.
-
-## Konfigurasi
-
-File .env aktual diabaikan Git. File .env.example di root merupakan
-rencana konfigurasi Compose dan tidak memuat rahasia aktual.
-
-Konfigurasi backend dan frontend akan disediakan saat scaffold.
-Perintah PHP yang dijalankan di Mac nantinya memakai alamat database
-yang dapat diakses host; nama service Docker dipakai antarkontainer.
-
-Development, testing lokal, CI, dan deployment menggunakan PostgreSQL
-dengan data serta kredensial pengujian yang terpisah.
+Branch pekerjaan berawal dari `dev` dan digabungkan melalui PR.
+Rilis stabil masuk dari `dev` ke `main` melalui PR.
