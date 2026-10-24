@@ -1,0 +1,20 @@
+# Environment aktual; contoh aman tetap dilacak
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Dependencies
+vendor/
+node_modules/
+
+# Build, coverage, dan cache pengujian
+dist/
+coverage/
+.phpunit.cache/
+.phpunit.result.cache
+
+# Log dan file lokal
+*.log
+.DS_Store
+.idea/
