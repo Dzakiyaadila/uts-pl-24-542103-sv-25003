@@ -4,8 +4,8 @@ Laravel 12 REST API dengan autentikasi token Sanctum dan PostgreSQL.
 
 ## Status
 
-Login, logout, dan endpoint profil terautentikasi tersedia.
-CRUD pesanan dan integrasi frontend belum diimplementasikan.
+Login, logout, profil, dan CRUD pesanan terautentikasi tersedia.
+Vue mengonsumsi API ini; Docker Compose menyediakan database terpisah dari lingkungan lokal.
 Database development dan testing lokal menggunakan container PostgreSQL terpisah.
 
 ## Persiapan lokal
@@ -43,12 +43,19 @@ password melalui prompt tersembunyi. Registrasi publik tidak tersedia.
 | POST | /api/login | Publik; JSON email dan password |
 | GET | /api/user | Bearer token |
 | POST | /api/logout | Bearer token; mencabut token yang dipakai |
+| GET | /api/orders | Bearer token; daftar milik pengguna |
+| GET | /api/orders/{id} | Bearer token; detail milik pengguna |
+| POST | /api/orders | Bearer token; membuat pesanan (201) |
+| PUT | /api/orders/{id} | Bearer token; mengubah pesanan |
+| DELETE | /api/orders/{id} | Bearer token; menghapus pesanan (204) |
 
 Login berhasil mengembalikan token dan data pengguna dalam JSON.
 Kirim token sebagai header Authorization: Bearer <token> untuk endpoint
 terlindungi. Respons validasi gagal 422, kredensial salah 401,
 dan akses tanpa token 401. Contoh request tanpa kredensial aktual ada
 di [Postman Collection](../docs/postman/orderly-api.postman_collection.json).
+Aturan field, status, kepemilikan, dan total harga ada di
+[kontrak API pesanan](../docs/order-api.md).
 
 ## Pemeriksaan
 
@@ -63,8 +70,8 @@ php artisan test
 ./vendor/bin/pint --test
 ```
 
-Feature test mencakup login berhasil/gagal, validasi, akses terlindungi,
-dan pencabutan token. Database testing terpisah dari orderly_dev.
+Feature test mencakup autentikasi, pencabutan token, CRUD, validasi,
+dan isolasi pesanan dua pengguna. Database testing terpisah dari orderly_dev.
 
 ## Environment
 
@@ -73,5 +80,9 @@ dan pencabutan token. Database testing terpisah dari orderly_dev.
 - .env.postgres-development dan .env.postgres-testing: variabel POSTGRES_*
   untuk masing-masing container.
 - Seluruh file aktual diabaikan Git; file .example tidak memuat rahasia.
+
+Untuk menjalankan API bersama Vue dan PostgreSQL di Docker Compose,
+lihat [README root](../README.md). Compose memakai file .env root sebagai
+konfigurasi runtime; kredensial aktual tetap diabaikan Git.
 
 Lihat [rencana proyek](../docs/project-plan.md) untuk arsitektur dan alur Git.
